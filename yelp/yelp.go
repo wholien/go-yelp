@@ -15,6 +15,7 @@ const (
 	rootURI      = "http://api.yelp.com/"
 	businessArea = "/v2/business"
 	searchArea   = "/v2/search"
+	phone        = "/v2/phone_search"
 )
 
 var (
@@ -88,6 +89,16 @@ func (client *Client) GetBusiness(name string) (result Business, err error) {
 			return Business{}, errBusinessNotFound
 		}
 		return Business{}, err
+	}
+	return result, nil
+}
+
+// PhoneSearch searches for businesses by phone number
+func (client *Client) PhoneSearch(number string) (result SearchResult, err error) {
+	params := map[string]string{"phone": number}
+	_, err = client.makeRequest(phone, "", params, &result)
+	if err != nil {
+		return SearchResult{}, err
 	}
 	return result, nil
 }
