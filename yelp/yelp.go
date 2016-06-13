@@ -21,6 +21,7 @@ const (
 var (
 	errUnspecifiedLocation = errors.New("location must be specified")
 	errBusinessNotFound    = errors.New("business not found")
+	errUnspecifiedPhone    = errors.New("phone number must be specified")
 )
 
 // AuthOptions provide keys required for using the Yelp API.  Find more
@@ -94,8 +95,8 @@ func (client *Client) GetBusiness(name string) (result Business, err error) {
 }
 
 // PhoneSearch searches for businesses by phone number
-func (client *Client) PhoneSearch(number string) (result SearchResult, err error) {
-	params := map[string]string{"phone": number}
+func (client *Client) PhoneSearch(options PhoneOptions) (result SearchResult, err error) {
+	params, err := options.getParameters()
 	_, err = client.makeRequest(phone, "", params, &result)
 	if err != nil {
 		return SearchResult{}, err
