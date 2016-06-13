@@ -11,6 +11,7 @@ import (
 const (
 	containsResults       string = "The query returns at least one result."
 	shouldRequireLocation string = "The query should require a location."
+	shouldRequirePhone    string = "The query should require a phone number."
 )
 
 // Check an error result for a value.  If present, fail the test with

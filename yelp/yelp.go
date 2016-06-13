@@ -97,8 +97,14 @@ func (client *Client) GetBusiness(name string) (result Business, err error) {
 // PhoneSearch searches for businesses by phone number
 func (client *Client) PhoneSearch(options PhoneOptions) (result SearchResult, err error) {
 	params, err := options.getParameters()
-	_, err = client.makeRequest(phone, "", params, &result)
 	if err != nil {
+		return SearchResult{}, err
+	}
+	statusCode, err := client.makeRequest(phone, "", params, &result)
+	if err != nil {
+		if statusCode == 400 {
+			return SearchResult{Total: 0}, err
+		}
 		return SearchResult{}, err
 	}
 	return result, nil
